@@ -21,8 +21,13 @@ config SHELL_BACKEND_SERIAL
 
 if SHELL_BACKEND_SERIAL
 
+config SHELL_BACKEND_USB_UART
+	bool "Use USB port as shell backend"
+	select USB_CDC_ACM
+
 config SHELL_BACKEND_SERIAL_INIT_PRIORITY
 	int "Initialization priority"
+	default 95 if SHELL_BACKEND_USB_UART
 	default 0
 	range 0 99
 	help

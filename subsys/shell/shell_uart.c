@@ -312,7 +312,13 @@ static int enable_shell_uart(const struct device *arg)
 
 	return 0;
 }
-SYS_INIT(enable_shell_uart, POST_KERNEL,
+
+SYS_INIT(enable_shell_uart,
+#if defined(CONFIG_SHELL_BACKEND_USB_UART)
+	 APPLICATION,
+#else
+	 POST_KERNEL,
+#endif
 	 CONFIG_SHELL_BACKEND_SERIAL_INIT_PRIORITY);
 
 const struct shell *shell_backend_uart_get_ptr(void)
