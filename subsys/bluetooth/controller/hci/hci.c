@@ -2839,9 +2839,9 @@ static void le_df_connectionless_iq_report(struct pdu_data *pdu_rx,
 		sep->sample[0].q = BT_HCI_LE_CTE_REPORT_NO_VALID_SAMPLE;
 		sep->sample_count = 0U;
 	} else {
-		for (uint8_t idx = 0U; idx < samples_cnt; ++idx) {
-			sep->sample[idx].i = IQ_CONVERT_12_TO_8_BIT(iq_report->sample[idx].i);
-			sep->sample[idx].q = IQ_CONVERT_12_TO_8_BIT(iq_report->sample[idx].q);
+		for (size_t idx = 0; idx < samples_cnt; ++idx) {
+			sep->sample[idx].i = iq_report->sample[idx].i;
+			sep->sample[idx].q = iq_report->sample[idx].q;
 		}
 
 		sep->sample_count = samples_cnt;
