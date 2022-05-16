@@ -67,6 +67,30 @@ typedef int (*spi_emul_io_t)(struct spi_emul *emul,
 			     const struct spi_buf_set *rx_bufs);
 
 /**
+ * Passes SPI messages to the emulator using the asynchronous API. The emulator
+ * updates the data with what was read back.
+ *
+ * @param emul Emulator instance
+ * @param config Pointer to a valid spi_config structure instance.
+ *        Pointer-comparison may be used to detect changes from
+ *        previous operations.
+ * @param tx_bufs Buffer array where data to be sent originates from,
+ *        or NULL if none.
+ * @param rx_bufs Buffer array where data to be read will be written to,
+ *        or NULL if none.
+ * @param async A pointer to a valid and ready to be signaled struct
+ * k_poll_signal.
+ *
+ * @retval 0 If successful.
+ * @retval -EIO General input / output error.
+ */
+typedef int (*spi_emul_io_async_t)(struct spi_emul *emul,
+			     const struct spi_config *config,
+			     const struct spi_buf_set *tx_bufs,
+			     const struct spi_buf_set *rx_bufs,
+				 struct k_poll_signal *async);
+
+/**
  * Register an emulated device on the controller
  *
  * @param dev Device that will use the emulator
@@ -80,6 +104,7 @@ int spi_emul_register(const struct device *dev, const char *name,
 /** Definition of the emulator API */
 struct spi_emul_api {
 	spi_emul_io_t io;
+	spi_emul_io_async_t io_async;
 };
 
 /**
